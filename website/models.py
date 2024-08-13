@@ -257,3 +257,34 @@ class Footer(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+#---Custom Page Types---
+# ---------------------- 
+
+class UpFrontEventPage(CoderedEventPage):
+    class Meta:
+        verbose_name = "Up Front Event Page"
+
+    subpage_types =[]
+    parent_page_types = ["website.UpFrontEventIndexPage"]
+    template = "website/pages/upfront_event_page.html"
+
+
+class UpFrontEventIndexPage(CoderedEventIndexPage):
+    """
+    Shows a list of event sub-pages.
+    """
+
+    class Meta:
+        verbose_name = "All Events"
+
+    index_query_pagemodel = "website.UpFrontEventPage"
+
+    # Only allow EventPages beneath this page.
+    subpage_types = ["website.UpFrontEventPage"]
+
+    template = "website/pages/upfront_event_index_page.html"
+
+
+class UpFrontEventOccurrence(CoderedEventOccurrence):
+    event = ParentalKey(UpFrontEventPage, related_name="occurrences")
